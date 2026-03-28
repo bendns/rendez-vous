@@ -30,6 +30,8 @@ src/
     ModeToggle.svelte     — restaurant / bar toggle
     VenueList.svelte      — ranked venue results with per-friend distance breakdown
     MapView.svelte        — Leaflet map with markers and walking route polylines
+    utils.js              — pure business logic (haversine, fairness, formatting)
+    utils.test.js         — unit tests for utils.js
 ```
 
 ## Commands
@@ -52,11 +54,19 @@ This app calls these APIs from the browser (no backend):
 
 - Before every commit or push, check that `README.md` and `CLAUDE.md` are up-to-date with any features, config changes, or structural changes introduced. Update them if needed before committing.
 - Commit messages must follow conventional commit format: `type(scope): description`. Enforced by the `commit-msg` hook.
+- When adding or modifying business logic in `utils.js`, add or update unit tests in `utils.test.js`. Tests run automatically via pre-commit hook and CI.
 - To release: push a tag `v*` (e.g. `git tag v1.0.0 && git push origin v1.0.0`). The workflow bumps `package.json`, generates release notes from conventional commits, creates a GitHub release, and deploys to Pages.
+
+## Testing
+
+- **Framework:** Vitest
+- **Test file:** `src/lib/utils.test.js`
+- **Run:** `npm test` (single run) or `npm run test:watch` (watch mode)
+- Pure business logic lives in `src/lib/utils.js` (no Svelte dependencies). `stores.svelte.js` imports from `utils.js` and wraps with reactive state.
+- Tests run in pre-commit hook and CI. A failing test blocks commits and PR merges.
 
 ## Notes
 
-- No test framework is set up yet.
 - No backend — everything runs client-side.
 - State management uses Svelte 5 runes (`$state`) in `stores.svelte.js`, exported as shared reactive objects.
 - Saved groups are persisted in `localStorage` (no database).

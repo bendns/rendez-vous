@@ -2,6 +2,13 @@
 
 echo "Running pre-commit checks..."
 
+npm test --silent
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "Tests failed. Fix errors before committing."
+  exit 1
+fi
+
 # Ensure config.js exists for build (use example if missing)
 if [ ! -f src/lib/config.js ]; then
   cp src/lib/config.example.js src/lib/config.js
