@@ -91,7 +91,7 @@
   <div class="flex-1 flex overflow-hidden">
     <!-- Sidebar -->
     <aside
-      class="w-full md:w-[380px] lg:w-[420px] shrink-0 flex flex-col bg-warm-white border-r border-gray-100 overflow-hidden transition-transform duration-300 {sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} {sidebarOpen ? 'absolute md:relative inset-0 top-auto z-20 h-[calc(100dvh-65px)] sm:h-[calc(100dvh-73px)] md:h-auto' : 'absolute md:relative -left-full md:left-0'}"
+      class="w-full md:w-[380px] lg:w-[420px] shrink-0 flex flex-col bg-warm-white border-r border-gray-100 overflow-hidden {sidebarOpen ? '' : 'hidden md:flex'} md:relative md:h-auto"
     >
       <div class="flex-1 overflow-y-auto p-4 sm:p-5 flex flex-col gap-4">
         <!-- Search -->
@@ -187,7 +187,8 @@
     </aside>
 
     <!-- Map -->
-    <main class="flex-1 relative">
+    <main class="flex-1 relative {sidebarOpen ? 'hidden md:block' : ''}"
+    >
       <MapView bind:selectedVenue />
 
       <!-- Floating info -->
