@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "git config core.hooksPath .hooks"
   },
   "devDependencies": {
@@ -14,7 +16,8 @@
     "@tailwindcss/vite": "^4.2.2",
     "svelte": "^5.53.12",
     "tailwindcss": "^4.2.2",
-    "vite": "^8.0.1"
+    "vite": "^8.0.1",
+    "vitest": "^4.1.2"
   },
   "dependencies": {
     "leaflet": "^1.9.4"

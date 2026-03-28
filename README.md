@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="Rendez-vous banner" />
+</p>
+
 # Rendez-vous
 
 A web app that helps friends find a fair meeting spot. Add everyone's address, pick restaurant or bar, and get a list of nearby venues ranked by fairness — so no one has to travel more than the others.

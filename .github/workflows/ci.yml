@@ -17,6 +17,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm test
+
       - run: |
           cp src/lib/config.example.js src/lib/config.js
           npm run build
