@@ -107,7 +107,7 @@
             {/if}
           </div>
 
-          <div class="flex items-center gap-1 mt-2">
+          <div class="flex flex-wrap items-center gap-1 mt-2">
             <button
               onclick={() => handleLoad(group)}
               class="text-[11px] px-2.5 py-1 rounded-lg bg-warm-gray text-dark font-semibold border-none cursor-pointer hover:bg-gray-200 transition-colors"

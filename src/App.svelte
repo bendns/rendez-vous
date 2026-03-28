@@ -19,58 +19,60 @@
 
 <div class="h-screen flex flex-col overflow-hidden bg-warm-white">
   <!-- Header -->
-  <header class="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-gray-100 z-10">
-    <div class="flex items-center gap-3">
-      <span class="text-3xl">📍</span>
+  <header class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-white/80 backdrop-blur-md border-b border-gray-100 z-10">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <span class="text-2xl sm:text-3xl">📍</span>
       <div>
-        <h1 class="text-xl font-display font-bold italic text-dark leading-tight">Rendez-vous</h1>
-        <p class="text-xs text-medium">Find the perfect meeting spot</p>
+        <h1 class="text-lg sm:text-xl font-display font-bold italic text-dark leading-tight">Rendez-vous</h1>
+        <p class="text-xs text-medium hidden sm:block">Find the perfect meeting spot</p>
       </div>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1.5 sm:gap-2">
       <div class="flex bg-warm-gray rounded-lg p-0.5 gap-0.5">
         <button
           onclick={() => unit.value = 'km'}
-          class="px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {unit.value === 'km' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
+          class="px-2 sm:px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {unit.value === 'km' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
         >km</button>
         <button
           onclick={() => unit.value = 'mi'}
-          class="px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {unit.value === 'mi' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
+          class="px-2 sm:px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {unit.value === 'mi' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
         >mi</button>
       </div>
       <button
         onclick={() => showSettings = !showSettings}
-        class="px-2.5 py-1 rounded-lg text-sm cursor-pointer border-none transition-colors {showSettings ? 'bg-coral/10 text-coral' : 'bg-warm-gray text-medium hover:text-dark'}"
+        class="px-2 sm:px-2.5 py-1 rounded-lg text-sm cursor-pointer border-none transition-colors {showSettings ? 'bg-coral/10 text-coral' : 'bg-warm-gray text-medium hover:text-dark'}"
         title="Settings"
       >
         {apiKey.value ? '🔑' : '⚙️'}
       </button>
       <button
         onclick={() => sidebarOpen = !sidebarOpen}
-        class="md:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-warm-gray text-dark text-sm font-semibold cursor-pointer border-none"
+        class="md:hidden flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-warm-gray text-dark text-sm font-semibold cursor-pointer border-none"
       >
-        {sidebarOpen ? '🗺️ Map' : '📋 List'}
+        {sidebarOpen ? '🗺️' : '📋'}
       </button>
     </div>
   </header>
 
   <!-- Settings bar -->
   {#if showSettings}
-    <div class="px-6 py-3 bg-warm-gray/50 border-b border-gray-100 flex items-center gap-3 animate-fade-in">
+    <div class="px-4 sm:px-6 py-3 bg-warm-gray/50 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 animate-fade-in">
       <label class="text-xs font-semibold text-dark whitespace-nowrap" for="ors-key">ORS API Key</label>
-      <input
-        id="ors-key"
-        type="password"
-        bind:value={keyInput}
-        onchange={() => setApiKey(keyInput.trim())}
-        placeholder="Paste your OpenRouteService key..."
-        class="flex-1 bg-white rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-dark placeholder:text-light outline-none focus:border-coral/30 max-w-md"
-      />
-      {#if apiKey.value}
-        <span class="text-xs text-mint font-semibold">Active</span>
-      {:else}
-        <a href="https://openrouteservice.org/dev/#/signup" target="_blank" rel="noopener" class="text-xs text-coral hover:underline whitespace-nowrap">Get a free key</a>
-      {/if}
+      <div class="flex items-center gap-2 flex-1">
+        <input
+          id="ors-key"
+          type="password"
+          bind:value={keyInput}
+          onchange={() => setApiKey(keyInput.trim())}
+          placeholder="Paste your OpenRouteService key..."
+          class="flex-1 bg-white rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-dark placeholder:text-light outline-none focus:border-coral/30 min-w-0"
+        />
+        {#if apiKey.value}
+          <span class="text-xs text-mint font-semibold shrink-0">Active</span>
+        {:else}
+          <a href="https://openrouteservice.org/dev/#/signup" target="_blank" rel="noopener" class="text-xs text-coral hover:underline whitespace-nowrap shrink-0">Get a free key</a>
+        {/if}
+      </div>
     </div>
   {/if}
 
@@ -78,9 +80,9 @@
   <div class="flex-1 flex overflow-hidden">
     <!-- Sidebar -->
     <aside
-      class="w-full md:w-[380px] lg:w-[420px] shrink-0 flex flex-col bg-warm-white border-r border-gray-100 overflow-hidden transition-transform duration-300 {sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} {sidebarOpen ? 'absolute md:relative inset-0 top-auto z-20 h-[calc(100vh-73px)] md:h-auto' : 'absolute md:relative -left-full md:left-0'}"
+      class="w-full md:w-[380px] lg:w-[420px] shrink-0 flex flex-col bg-warm-white border-r border-gray-100 overflow-hidden transition-transform duration-300 {sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} {sidebarOpen ? 'absolute md:relative inset-0 top-auto z-20 h-[calc(100dvh-65px)] sm:h-[calc(100dvh-73px)] md:h-auto' : 'absolute md:relative -left-full md:left-0'}"
     >
-      <div class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
+      <div class="flex-1 overflow-y-auto p-4 sm:p-5 flex flex-col gap-4">
         <!-- Search -->
         <div>
           <h2 class="text-sm font-bold text-dark mb-2 flex items-center gap-2">
@@ -179,7 +181,7 @@
 
       <!-- Floating info -->
       {#if friends.list.length >= 2 && venues.list.length > 0}
-        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md rounded-xl px-4 py-2 shadow-lg border border-gray-100 animate-fade-in">
+        <div class="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/90 backdrop-blur-md rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shadow-lg border border-gray-100 animate-fade-in">
           <p class="text-xs text-medium">
             <span class="font-bold text-coral">{venues.list.length}</span>
             {mode.value === 'restaurant' ? 'restaurants' : 'bars'} found

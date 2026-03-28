@@ -73,7 +73,7 @@
           </div>
 
           {#if selectedVenueId === venue.id}
-            <div class="mt-3 ml-7 flex flex-col gap-1.5 animate-fade-in">
+            <div class="mt-3 ml-5 sm:ml-7 flex flex-col gap-1.5 animate-fade-in">
               {#each friends.list as friend, fi}
                 {@const d = distanceToFriend(venue.lat, venue.lon, friend.lat, friend.lng)}
                 {@const walkTime = venue.walkTimes?.[fi]}
