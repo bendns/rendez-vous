@@ -3,7 +3,7 @@
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import { friends, venues, centroid, mode, apiKey, fetchRoutes } from './stores.svelte.js';
-  import { t } from './i18n.js';
+  import { t } from './i18n.svelte.js';
 
   let { selectedVenue = $bindable(null) } = $props();
 

@@ -1,7 +1,7 @@
 <script>
   import { friends, loadFriends, searchVenues } from './stores.svelte.js';
   import { groups, saveGroup, deleteGroup, renameGroup, updateGroup } from './groups.svelte.js';
-  import { t } from './i18n.js';
+  import { t } from './i18n.svelte.js';
 
   let saveName = $state('');
   let editingId = $state(null);

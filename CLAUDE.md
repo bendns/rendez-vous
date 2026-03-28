@@ -32,7 +32,7 @@ src/
     MapView.svelte        — Leaflet map with markers and walking route polylines
     utils.js              — pure business logic (haversine, fairness, formatting)
     utils.test.js         — unit tests for utils.js
-    i18n.js               — translations (FR, EN, ES) and t() helper
+    i18n.svelte.js        — translations (FR, EN, ES) and t() helper
 ```
 
 ## Commands

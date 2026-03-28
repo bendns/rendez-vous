@@ -1,6 +1,6 @@
 <script>
   import { friends, removeFriend, searchVenues } from './stores.svelte.js';
-  import { t } from './i18n.js';
+  import { t } from './i18n.svelte.js';
 
   const colors = ['#FF6B6B', '#A8E6CF', '#84C5F4', '#DCD6F7', '#FFD93D', '#FF8CC8', '#6BCB77', '#C4A1FF'];
 

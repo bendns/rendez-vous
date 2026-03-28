@@ -1,7 +1,7 @@
 import { mount } from 'svelte'
 import './app.css'
 import App from './App.svelte'
-import { locale } from './lib/i18n.js'
+import { locale } from './lib/i18n.svelte.js'
 
 document.documentElement.lang = locale.value
 

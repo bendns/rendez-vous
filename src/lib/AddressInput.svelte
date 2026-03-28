@@ -1,6 +1,6 @@
 <script>
   import { addFriend, friends, searchVenues, MAX_ADDRESSES } from './stores.svelte.js';
-  import { t, locale } from './i18n.js';
+  import { t, locale } from './i18n.svelte.js';
 
   let query = $state('');
   let friendName = $state('');
