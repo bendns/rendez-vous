@@ -2,6 +2,13 @@
 
 echo "Running pre-commit checks..."
 
+npm run lint --silent
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "Lint failed. Run 'npm run lint:fix' to auto-fix."
+  exit 1
+fi
+
 npm test --silent
 if [ $? -ne 0 ]; then
   echo ""

@@ -15,28 +15,32 @@ function save() {
 }
 
 export function saveGroup(name, friends) {
-  groups.list = [...groups.list, {
-    id: Date.now(),
-    name,
-    friends: friends.map(f => ({ name: f.name, lat: f.lat, lng: f.lng, displayName: f.displayName })),
-  }];
+  groups.list = [
+    ...groups.list,
+    {
+      id: Date.now(),
+      name,
+      friends: friends.map((f) => ({ name: f.name, lat: f.lat, lng: f.lng, displayName: f.displayName })),
+    },
+  ];
   save();
 }
 
 export function deleteGroup(id) {
-  groups.list = groups.list.filter(g => g.id !== id);
+  groups.list = groups.list.filter((g) => g.id !== id);
   save();
 }
 
 export function renameGroup(id, newName) {
-  groups.list = groups.list.map(g => g.id === id ? { ...g, name: newName } : g);
+  groups.list = groups.list.map((g) => (g.id === id ? { ...g, name: newName } : g));
   save();
 }
 
 export function updateGroup(id, friends) {
-  groups.list = groups.list.map(g => g.id === id
-    ? { ...g, friends: friends.map(f => ({ name: f.name, lat: f.lat, lng: f.lng, displayName: f.displayName })) }
-    : g
+  groups.list = groups.list.map((g) =>
+    g.id === id
+      ? { ...g, friends: friends.map((f) => ({ name: f.name, lat: f.lat, lng: f.lng, displayName: f.displayName })) }
+      : g,
   );
   save();
 }

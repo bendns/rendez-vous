@@ -9,11 +9,18 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint": "eslint src/ && prettier --check src/",
+    "lint:fix": "eslint src/ --fix && prettier --write src/",
     "prepare": "git config core.hooksPath .hooks"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tailwindcss/vite": "^4.2.2",
+    "eslint": "^10.1.0",
+    "eslint-plugin-svelte": "^3.16.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-svelte": "^3.5.1",
     "svelte": "^5.53.12",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.1",

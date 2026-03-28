@@ -1,21 +1,21 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
 
-  --color-coral: #FF6B6B;
-  --color-coral-dark: #E85D5D;
-  --color-peach: #FFECD2;
-  --color-mint: #A8E6CF;
-  --color-mint-dark: #7DD3B0;
-  --color-lavender: #DCD6F7;
-  --color-sky: #84C5F4;
-  --color-warm-white: #FFF9F5;
-  --color-warm-gray: #F5F0EB;
-  --color-dark: #2D2D2D;
-  --color-medium: #6B7280;
-  --color-light: #9CA3AF;
+  --color-coral: #ff6b6b;
+  --color-coral-dark: #e85d5d;
+  --color-peach: #ffecd2;
+  --color-mint: #a8e6cf;
+  --color-mint-dark: #7dd3b0;
+  --color-lavender: #dcd6f7;
+  --color-sky: #84c5f4;
+  --color-warm-white: #fff9f5;
+  --color-warm-gray: #f5f0eb;
+  --color-dark: #2d2d2d;
+  --color-medium: #6b7280;
+  --color-light: #9ca3af;
 }
 
 * {
@@ -39,7 +39,7 @@ body {
 
 .leaflet-popup-content-wrapper {
   border-radius: 12px !important;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
   font-family: var(--font-sans) !important;
 }
 

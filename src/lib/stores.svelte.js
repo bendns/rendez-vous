@@ -4,7 +4,6 @@ import {
   fairnessScore,
   formatDistanceValue,
   formatMaxDistanceValue,
-  formatDuration as _formatDuration,
   computeCentroid,
   checkTooFarApart,
 } from './utils.js';
@@ -43,12 +42,12 @@ export function addFriend(name, lat, lng, displayName) {
 }
 
 export function removeFriend(id) {
-  friends.list = friends.list.filter(f => f.id !== id);
+  friends.list = friends.list.filter((f) => f.id !== id);
   recalcCentroid();
 }
 
 export function loadFriends(list) {
-  friends.list = list.map(f => ({ ...f, id: nextId++ }));
+  friends.list = list.map((f) => ({ ...f, id: nextId++ }));
   recalcCentroid();
 }
 
@@ -83,10 +82,7 @@ export function formatMaxDistance() {
 }
 
 async function fetchWalkingDurations(venueLocs) {
-  const locations = [
-    ...friends.list.map(f => [f.lng, f.lat]),
-    ...venueLocs.map(v => [v.lon, v.lat]),
-  ];
+  const locations = [...friends.list.map((f) => [f.lng, f.lat]), ...venueLocs.map((v) => [v.lon, v.lat])];
   const sources = friends.list.map((_, i) => i);
   const destinations = venueLocs.map((_, i) => friends.list.length + i);
 
@@ -94,7 +90,7 @@ async function fetchWalkingDurations(venueLocs) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiKey.value,
+      Authorization: apiKey.value,
     },
     body: JSON.stringify({ locations, sources, destinations, metrics: ['duration'] }),
   });
@@ -111,12 +107,12 @@ export async function fetchRoutes(venue) {
     friends.list.map(async (f) => {
       const res = await fetch(
         `https://api.openrouteservice.org/v2/directions/foot-walking?start=${f.lng},${f.lat}&end=${venue.lon},${venue.lat}`,
-        { headers: { 'Authorization': apiKey.value } },
+        { headers: { Authorization: apiKey.value } },
       );
       if (!res.ok) throw new Error(`ORS directions error: ${res.status}`);
       const data = await res.json();
       return data.features[0].geometry.coordinates;
-    })
+    }),
   );
   return routes;
 }
@@ -156,39 +152,44 @@ async function rankAndDisplay(elements) {
 
     if (ranking.value === 'walking' && friends.list.length >= 2 && elements.length > 0) {
       const durations = await fetchWalkingDurations(elements);
-      results = elements.map((e, vi) => {
-        const walkTimes = friends.list.map((_, fi) => durations[fi][vi]);
-        return {
-          id: e.id,
-          name: e.tags.name,
-          lat: e.lat,
-          lon: e.lon,
-          cuisine: e.tags.cuisine || '',
-          openingHours: e.tags.opening_hours || '',
-          phone: e.tags.phone || '',
-          website: e.tags.website || '',
-          fairness: fairnessScore(walkTimes),
-          avgWalkTime: walkTimes.reduce((a, b) => a + b, 0) / walkTimes.length,
-          walkTimes,
-          avgDistance: friends.list.reduce((s, f) => s + haversineDistance(e.lat, e.lon, f.lat, f.lng), 0) / friends.list.length,
-        };
-      }).sort((a, b) => a.fairness - b.fairness);
+      results = elements
+        .map((e, vi) => {
+          const walkTimes = friends.list.map((_, fi) => durations[fi][vi]);
+          return {
+            id: e.id,
+            name: e.tags.name,
+            lat: e.lat,
+            lon: e.lon,
+            cuisine: e.tags.cuisine || '',
+            openingHours: e.tags.opening_hours || '',
+            phone: e.tags.phone || '',
+            website: e.tags.website || '',
+            fairness: fairnessScore(walkTimes),
+            avgWalkTime: walkTimes.reduce((a, b) => a + b, 0) / walkTimes.length,
+            walkTimes,
+            avgDistance:
+              friends.list.reduce((s, f) => s + haversineDistance(e.lat, e.lon, f.lat, f.lng), 0) / friends.list.length,
+          };
+        })
+        .sort((a, b) => a.fairness - b.fairness);
     } else {
-      results = elements.map(e => {
-        const distances = friends.list.map(f => haversineDistance(e.lat, e.lon, f.lat, f.lng));
-        return {
-          id: e.id,
-          name: e.tags.name,
-          lat: e.lat,
-          lon: e.lon,
-          cuisine: e.tags.cuisine || '',
-          openingHours: e.tags.opening_hours || '',
-          phone: e.tags.phone || '',
-          website: e.tags.website || '',
-          fairness: fairnessScore(distances),
-          avgDistance: distances.reduce((a, b) => a + b, 0) / distances.length,
-        };
-      }).sort((a, b) => a.fairness - b.fairness);
+      results = elements
+        .map((e) => {
+          const distances = friends.list.map((f) => haversineDistance(e.lat, e.lon, f.lat, f.lng));
+          return {
+            id: e.id,
+            name: e.tags.name,
+            lat: e.lat,
+            lon: e.lon,
+            cuisine: e.tags.cuisine || '',
+            openingHours: e.tags.opening_hours || '',
+            phone: e.tags.phone || '',
+            website: e.tags.website || '',
+            fairness: fairnessScore(distances),
+            avgDistance: distances.reduce((a, b) => a + b, 0) / distances.length,
+          };
+        })
+        .sort((a, b) => a.fairness - b.fairness);
     }
 
     venues.list = results;
@@ -220,13 +221,13 @@ async function _doSearch(amenity, key) {
     }
     const data = await res.json();
     cachedElements = data.elements
-      .filter(e => e.tags && e.tags.name)
-      .map(e => ({
+      .filter((e) => e.tags && e.tags.name)
+      .map((e) => ({
         ...e,
         lat: e.lat ?? e.center?.lat,
         lon: e.lon ?? e.center?.lon,
       }))
-      .filter(e => e.lat != null && e.lon != null);
+      .filter((e) => e.lat != null && e.lon != null);
     cacheKey = key;
 
     await rankAndDisplay(cachedElements);

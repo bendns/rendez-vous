@@ -87,7 +87,8 @@
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
       maxZoom: 19,
     }).addTo(map);
 
@@ -103,13 +104,15 @@
   $effect(() => {
     if (!map) return;
 
-    friendMarkers.forEach(m => map.removeLayer(m));
+    friendMarkers.forEach((m) => map.removeLayer(m));
     friendMarkers = [];
 
     friends.list.forEach((f, i) => {
       const marker = L.marker([f.lat, f.lng], { icon: createFriendIcon(i) })
         .addTo(map)
-        .bindPopup(`<div class="friend-popup">${f.name}<br/><span style="font-weight:400;font-size:12px;color:#6B7280">${f.displayName.split(',').slice(0, 2).join(',')}</span></div>`);
+        .bindPopup(
+          `<div class="friend-popup">${f.name}<br/><span style="font-weight:400;font-size:12px;color:#6B7280">${f.displayName.split(',').slice(0, 2).join(',')}</span></div>`,
+        );
       friendMarkers.push(marker);
     });
 
@@ -135,26 +138,26 @@
   $effect(() => {
     if (!map) return;
 
-    venueMarkers.forEach(m => map.removeLayer(m));
+    venueMarkers.forEach((m) => map.removeLayer(m));
     venueMarkers = [];
 
     venues.list.forEach((v, i) => {
-      const marker = L.marker([v.lat, v.lon], { icon: createVenueIcon(i + 1) })
-        .addTo(map)
-        .bindPopup(`
+      const marker = L.marker([v.lat, v.lon], { icon: createVenueIcon(i + 1) }).addTo(map).bindPopup(`
           <div>
             <div class="venue-popup-name">${v.name}</div>
             ${v.cuisine ? `<div class="venue-popup-type">${v.cuisine.replace(/;/g, ', ')}</div>` : ''}
             <div class="venue-popup-distance">~${Math.round(v.avgDistance)}m ${t('map.avg')}</div>
           </div>
         `);
-      marker.on('click', () => { selectedVenue = v; });
+      marker.on('click', () => {
+        selectedVenue = v;
+      });
       venueMarkers.push(marker);
     });
   });
 
   function clearRoutes() {
-    routeLayers.forEach(l => map.removeLayer(l));
+    routeLayers.forEach((l) => map.removeLayer(l));
     routeLayers = [];
   }
 
@@ -166,36 +169,38 @@
 
     map.flyTo([venue.lat, venue.lon], 15, { duration: 0.8 });
 
-    fetchRoutes(venue).then(routes => {
-      if (routeVersion !== version) return;
-      clearRoutes();
-      routes.forEach((coords, i) => {
-        const latLngs = coords.map(([lng, lat]) => [lat, lng]);
-        const color = friendColors[i % friendColors.length];
-        const outline = L.polyline(latLngs, {
-          color: '#ffffff',
-          weight: 7,
-          opacity: 0.8,
-          lineCap: 'round',
-          lineJoin: 'round',
-        }).addTo(map);
-        const line = L.polyline(latLngs, {
-          color,
-          weight: 4,
-          opacity: 0.9,
-          lineCap: 'round',
-          lineJoin: 'round',
-        }).addTo(map);
-        routeLayers.push(outline, line);
-      });
+    fetchRoutes(venue)
+      .then((routes) => {
+        if (routeVersion !== version) return;
+        clearRoutes();
+        routes.forEach((coords, i) => {
+          const latLngs = coords.map(([lng, lat]) => [lat, lng]);
+          const color = friendColors[i % friendColors.length];
+          const outline = L.polyline(latLngs, {
+            color: '#ffffff',
+            weight: 7,
+            opacity: 0.8,
+            lineCap: 'round',
+            lineJoin: 'round',
+          }).addTo(map);
+          const line = L.polyline(latLngs, {
+            color,
+            weight: 4,
+            opacity: 0.9,
+            lineCap: 'round',
+            lineJoin: 'round',
+          }).addTo(map);
+          routeLayers.push(outline, line);
+        });
 
-      const allPoints = routes.flatMap(coords => coords.map(([lng, lat]) => [lat, lng]));
-      if (allPoints.length > 0) {
-        map.fitBounds(L.latLngBounds(allPoints).pad(0.15), { maxZoom: 16 });
-      }
-    }).catch(err => {
-      console.error('Failed to fetch routes:', err);
-    });
+        const allPoints = routes.flatMap((coords) => coords.map(([lng, lat]) => [lat, lng]));
+        if (allPoints.length > 0) {
+          map.fitBounds(L.latLngBounds(allPoints).pad(0.15), { maxZoom: 16 });
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch routes:', err);
+      });
   }
 
   $effect(() => {
@@ -212,8 +217,20 @@
 
 <style>
   @keyframes pulse-ring {
-    0% { box-shadow: 0 0 0 3px rgba(255,107,107,0.3), 0 2px 8px rgba(0,0,0,0.2); }
-    70% { box-shadow: 0 0 0 12px rgba(255,107,107,0), 0 2px 8px rgba(0,0,0,0.2); }
-    100% { box-shadow: 0 0 0 3px rgba(255,107,107,0), 0 2px 8px rgba(0,0,0,0.2); }
+    0% {
+      box-shadow:
+        0 0 0 3px rgba(255, 107, 107, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    70% {
+      box-shadow:
+        0 0 0 12px rgba(255, 107, 107, 0),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+      box-shadow:
+        0 0 0 3px rgba(255, 107, 107, 0),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    }
   }
 </style>
