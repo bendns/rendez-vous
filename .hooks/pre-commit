@@ -1,0 +1,25 @@
+#!/bin/sh
+
+echo "Running pre-commit checks..."
+
+# Ensure config.js exists for build (use example if missing)
+if [ ! -f src/lib/config.js ]; then
+  cp src/lib/config.example.js src/lib/config.js
+  CREATED_CONFIG=1
+fi
+
+npm run build --silent
+BUILD_EXIT=$?
+
+# Clean up temp config
+if [ "$CREATED_CONFIG" = "1" ]; then
+  rm src/lib/config.js
+fi
+
+if [ $BUILD_EXIT -ne 0 ]; then
+  echo ""
+  echo "Build failed. Fix errors before committing."
+  exit 1
+fi
+
+echo "Pre-commit checks passed."
