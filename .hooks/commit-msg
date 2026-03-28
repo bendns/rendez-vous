@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Enforce conventional commit format: type(scope): description
+# Types: feat, fix, chore, refactor, docs, test, style, perf, ci, build
+
+msg=$(head -1 "$1")
+
+# Allow merge commits
+if echo "$msg" | grep -qE '^Merge '; then
+  exit 0
+fi
+
+if ! echo "$msg" | grep -qE '^(feat|fix|chore|refactor|docs|test|style|perf|ci|build)(\(.+\))?: .+'; then
+  echo ""
+  echo "Invalid commit message format:"
+  echo "  $msg"
+  echo ""
+  echo "Expected: type(scope): description"
+  echo "Types: feat, fix, chore, refactor, docs, test, style, perf, ci, build"
+  echo "Examples:"
+  echo "  feat(map): add walking route visualization"
+  echo "  fix(api): handle Overpass 429 errors"
+  echo "  docs(readme): update feature list"
+  echo ""
+  exit 1
+fi

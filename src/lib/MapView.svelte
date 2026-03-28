@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
-  import { friends, venues, centroid, mode, fetchRoutes } from './stores.svelte.js';
+  import { friends, venues, centroid, mode, apiKey, fetchRoutes } from './stores.svelte.js';
 
   let { selectedVenue = $bindable(null) } = $props();
 
@@ -154,6 +154,7 @@
   function drawRoutes(venue) {
     if (!map || !venue) return;
     clearRoutes();
+    if (!apiKey.value) return;
     const version = ++routeVersion;
 
     map.flyTo([venue.lat, venue.lon], 15, { duration: 0.8 });

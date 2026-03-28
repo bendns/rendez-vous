@@ -11,7 +11,7 @@ npm install
 cp src/lib/config.example.js src/lib/config.js
 ```
 
-Edit `src/lib/config.js` with your OpenRouteService API key (free at https://openrouteservice.org/dev/#/signup). Then:
+Then:
 
 ```sh
 npm run dev
@@ -21,9 +21,11 @@ npm run dev
 
 - Add friends by name (optional) and address
 - Two ranking modes: **equidistant** (straight-line distance) or **walking time** (via OpenRouteService)
+- ORS API key can be entered in the app UI (click the settings icon) — stored in session only, never persisted
 - Walking route visualization on the map with a different color per friend
 - Per-friend distance breakdown when selecting a venue
 - Save and load groups of addresses (persisted in localStorage)
+- km / miles toggle
 - Configurable max distance between friends and max number of addresses
 
 ## How It Works
@@ -40,8 +42,8 @@ Edit `src/lib/config.js`:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `ORS_API_KEY` | — | OpenRouteService API key (required for walking mode and routes) |
-| `MAX_DISTANCE_KM` | `10` | Max allowed distance between any two friends (km) |
+| `ORS_API_KEY` | `''` | OpenRouteService API key (optional — users can enter their own in the UI) |
+| `MAX_DISTANCE` | `10` | Max allowed distance between any two friends (in km) |
 | `MAX_ADDRESSES` | `10` | Max number of friends/addresses |
 
 ## Tech Stack
@@ -60,3 +62,20 @@ Edit `src/lib/config.js`:
 | `npm run dev` | Start dev server |
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build |
+
+## Deployment
+
+Push a version tag to trigger a release and deploy to GitHub Pages:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+This automatically:
+1. Bumps `package.json` version
+2. Generates release notes from conventional commits
+3. Creates a GitHub release
+4. Deploys to GitHub Pages
+
+Live at: https://bendns.github.io/rendez-vous/

@@ -1,6 +1,19 @@
-import { ORS_API_KEY, MAX_DISTANCE_KM, MAX_ADDRESSES } from './config.js';
+import { ORS_API_KEY, MAX_DISTANCE, MAX_ADDRESSES } from './config.js';
 
-export { MAX_DISTANCE_KM, MAX_ADDRESSES };
+export { MAX_DISTANCE, MAX_ADDRESSES };
+
+export const apiKey = $state({ value: ORS_API_KEY || sessionStorage.getItem('ors-api-key') || '' });
+
+export function setApiKey(key) {
+  apiKey.value = key;
+  if (key) {
+    sessionStorage.setItem('ors-api-key', key);
+  } else {
+    sessionStorage.removeItem('ors-api-key');
+  }
+}
+
+export const unit = $state({ value: 'km' });
 
 export const friends = $state({ list: [] });
 export const venues = $state({ list: [], loading: false });
@@ -45,7 +58,7 @@ function recalcCentroid() {
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
       const d = haversineDistance(friends.list[i].lat, friends.list[i].lng, friends.list[j].lat, friends.list[j].lng);
-      if (d > MAX_DISTANCE_KM * 1000) {
+      if (d > MAX_DISTANCE * 1000) {
         tooFarApart.value = true;
         venues.list = [];
         return;
@@ -68,8 +81,18 @@ export function distanceToFriend(venueLat, venueLng, friendLat, friendLng) {
 }
 
 export function formatDistance(meters) {
+  if (unit.value === 'mi') {
+    const feet = meters * 3.28084;
+    if (feet < 2640) return `${Math.round(feet)}ft`;
+    return `${(meters / 1609.344).toFixed(1)}mi`;
+  }
   if (meters < 1000) return `${Math.round(meters)}m`;
   return `${(meters / 1000).toFixed(1)}km`;
+}
+
+export function formatMaxDistance() {
+  if (unit.value === 'mi') return `${(MAX_DISTANCE / 1.609344).toFixed(1)}mi`;
+  return `${MAX_DISTANCE}km`;
 }
 
 export function formatDuration(seconds) {
@@ -99,7 +122,7 @@ async function fetchWalkingDurations(venueLocs) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': ORS_API_KEY,
+      'Authorization': apiKey.value,
     },
     body: JSON.stringify({ locations, sources, destinations, metrics: ['duration'] }),
   });
@@ -116,7 +139,7 @@ export async function fetchRoutes(venue) {
     friends.list.map(async (f) => {
       const res = await fetch(
         `https://api.openrouteservice.org/v2/directions/foot-walking?start=${f.lng},${f.lat}&end=${venue.lon},${venue.lat}`,
-        { headers: { 'Authorization': ORS_API_KEY } },
+        { headers: { 'Authorization': apiKey.value } },
       );
       if (!res.ok) throw new Error(`ORS directions error: ${res.status}`);
       const data = await res.json();
