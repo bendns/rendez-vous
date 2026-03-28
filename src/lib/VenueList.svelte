@@ -1,6 +1,6 @@
 <script>
   import { venues, friends, ranking, formatDistance, formatDuration, distanceToFriend } from './stores.svelte.js';
-  import { t } from './i18n.js';
+  import { t } from './i18n.svelte.js';
 
   let { onSelectVenue = () => {}, selectedVenueId = null } = $props();
 

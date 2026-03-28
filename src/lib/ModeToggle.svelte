@@ -1,6 +1,6 @@
 <script>
   import { mode, searchVenues, friends } from './stores.svelte.js';
-  import { t } from './i18n.js';
+  import { t } from './i18n.svelte.js';
 
   function toggle(newMode) {
     mode.value = newMode;

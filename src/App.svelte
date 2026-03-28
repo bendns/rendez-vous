@@ -6,7 +6,7 @@
   import MapView from './lib/MapView.svelte';
   import GroupManager from './lib/GroupManager.svelte';
   import { friends, venues, mode, ranking, unit, apiKey, setApiKey, tooFarApart, MAX_DISTANCE, MAX_ADDRESSES, searchVenues, rerankVenues, formatMaxDistance } from './lib/stores.svelte.js';
-  import { t, locale, locales, localeLabels, setLocale } from './lib/i18n.js';
+  import { t, locale, locales, localeLabels, setLocale } from './lib/i18n.svelte.js';
 
   let selectedVenue = $state(null);
   let sidebarOpen = $state(true);
