@@ -189,7 +189,7 @@
     <!-- Map -->
     <main class="flex-1 relative {sidebarOpen ? 'hidden md:block' : ''}"
     >
-      <MapView bind:selectedVenue />
+      <MapView bind:selectedVenue sidebarOpen={sidebarOpen} />
 
       <!-- Floating info -->
       {#if friends.list.length >= 2 && venues.list.length > 0}

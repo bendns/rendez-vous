@@ -5,7 +5,7 @@
   import { friends, venues, centroid, mode, apiKey, fetchRoutes } from './stores.svelte.js';
   import { t } from './i18n.svelte.js';
 
-  let { selectedVenue = $bindable(null) } = $props();
+  let { selectedVenue = $bindable(null), sidebarOpen = true } = $props();
 
   let mapContainer;
   let map;
@@ -92,6 +92,12 @@
     }).addTo(map);
 
     return () => map.remove();
+  });
+
+  $effect(() => {
+    sidebarOpen;
+    if (!map) return;
+    setTimeout(() => map.invalidateSize(), 50);
   });
 
   $effect(() => {
