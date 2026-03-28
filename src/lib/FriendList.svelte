@@ -1,5 +1,6 @@
 <script>
   import { friends, removeFriend, searchVenues } from './stores.svelte.js';
+  import { t } from './i18n.js';
 
   const colors = ['#FF6B6B', '#A8E6CF', '#84C5F4', '#DCD6F7', '#FFD93D', '#FF8CC8', '#6BCB77', '#C4A1FF'];
 
@@ -38,7 +39,7 @@
         <button
           onclick={() => handleRemove(friend.id)}
           class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light hover:text-coral cursor-pointer bg-transparent border-none text-lg p-1"
-          aria-label="Remove {friend.name}"
+          aria-label={t('friends.remove', { name: friend.name })}
         >
           ✕
         </button>

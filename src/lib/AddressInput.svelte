@@ -1,5 +1,6 @@
 <script>
   import { addFriend, friends, searchVenues, MAX_ADDRESSES } from './stores.svelte.js';
+  import { t, locale } from './i18n.js';
 
   let query = $state('');
   let friendName = $state('');
@@ -23,7 +24,7 @@
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=5&addressdetails=1`,
-        { headers: { 'Accept-Language': 'fr,en' } }
+        { headers: { 'Accept-Language': `${locale.value},en` } }
       );
       suggestions = await res.json();
       showSuggestions = suggestions.length > 0;
@@ -36,7 +37,7 @@
 
   function selectSuggestion(s) {
     if (friends.list.length >= MAX_ADDRESSES) return;
-    const name = friendName.trim() || `Ami ${friends.list.length + 1}`;
+    const name = friendName.trim() || `${friends.list.length + 1}`;
     addFriend(name, parseFloat(s.lat), parseFloat(s.lon), s.display_name);
     query = '';
     friendName = '';
@@ -63,7 +64,7 @@
       type="text"
       bind:this={nameInput}
       bind:value={friendName}
-      placeholder="Name (optional)"
+      placeholder={t('friends.namePlaceholder')}
       disabled={friends.list.length >= MAX_ADDRESSES}
       class="flex-1 bg-transparent outline-none text-dark placeholder:text-light text-[15px] disabled:opacity-50 disabled:cursor-not-allowed"
     />
@@ -78,7 +79,7 @@
       onkeydown={handleKeydown}
       onblur={handleBlur}
       onfocus={() => { if (suggestions.length > 0) showSuggestions = true; }}
-      placeholder={friends.list.length >= MAX_ADDRESSES ? `Max ${MAX_ADDRESSES} addresses reached` : "Address..."}
+      placeholder={friends.list.length >= MAX_ADDRESSES ? t('friends.maxReached', { max: MAX_ADDRESSES }) : t('friends.addressPlaceholder')}
       disabled={friends.list.length >= MAX_ADDRESSES}
       class="flex-1 bg-transparent outline-none text-dark placeholder:text-light text-[15px] disabled:opacity-50 disabled:cursor-not-allowed"
     />

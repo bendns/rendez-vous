@@ -29,6 +29,7 @@ npm run dev
 - Walking route visualization on the map with a different color per friend
 - Per-friend distance breakdown when selecting a venue
 - Save and load groups of addresses (persisted in localStorage)
+- Multilingual: French, English, Spanish (auto-detected from browser)
 - km / miles toggle
 - Configurable max distance between friends and max number of addresses
 
