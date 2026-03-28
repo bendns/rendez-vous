@@ -15,7 +15,7 @@ describe('haversineDistance', () => {
   });
 
   it('computes Paris to Lyon (~392km)', () => {
-    const d = haversineDistance(48.8566, 2.3522, 45.7640, 4.8357);
+    const d = haversineDistance(48.8566, 2.3522, 45.764, 4.8357);
     expect(d).toBeGreaterThan(390000);
     expect(d).toBeLessThan(395000);
   });
@@ -141,7 +141,7 @@ describe('checkTooFarApart', () => {
   it('returns true for distant friends', () => {
     const friends = [
       { lat: 48.8566, lng: 2.3522 }, // Paris
-      { lat: 45.7640, lng: 4.8357 }, // Lyon
+      { lat: 45.764, lng: 4.8357 }, // Lyon
     ];
     expect(checkTooFarApart(friends, 10)).toBe(true);
   });
@@ -150,7 +150,7 @@ describe('checkTooFarApart', () => {
     const friends = [
       { lat: 48.8566, lng: 2.3522 },
       { lat: 48.8606, lng: 2.3376 }, // close to first
-      { lat: 45.7640, lng: 4.8357 }, // far from both
+      { lat: 45.764, lng: 4.8357 }, // far from both
     ];
     expect(checkTooFarApart(friends, 10)).toBe(true);
   });

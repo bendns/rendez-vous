@@ -15,7 +15,9 @@
     saveGroup(name, friends.list);
     saveName = '';
     showSaved = true;
-    setTimeout(() => { showSaved = false; }, 2000);
+    setTimeout(() => {
+      showSaved = false;
+    }, 2000);
   }
 
   function handleLoad(group) {
@@ -27,7 +29,9 @@
     if (friends.list.length === 0) return;
     updateGroup(group.id, friends.list);
     showSaved = true;
-    setTimeout(() => { showSaved = false; }, 2000);
+    setTimeout(() => {
+      showSaved = false;
+    }, 2000);
   }
 
   function startRename(group) {
@@ -45,7 +49,10 @@
 
   function handleRenameKeydown(e) {
     if (e.key === 'Enter') confirmRename();
-    if (e.key === 'Escape') { editingId = null; editingName = ''; }
+    if (e.key === 'Escape') {
+      editingId = null;
+      editingName = '';
+    }
   }
 
   function handleDelete(id) {
@@ -54,7 +61,9 @@
       confirmDeleteId = null;
     } else {
       confirmDeleteId = id;
-      setTimeout(() => { confirmDeleteId = null; }, 3000);
+      setTimeout(() => {
+        confirmDeleteId = null;
+      }, 3000);
     }
   }
 </script>
@@ -66,7 +75,9 @@
       <input
         type="text"
         bind:value={saveName}
-        onkeydown={(e) => { if (e.key === 'Enter') handleSave(); }}
+        onkeydown={(e) => {
+          if (e.key === 'Enter') handleSave();
+        }}
         placeholder={t('groups.namePlaceholder')}
         class="flex-1 bg-white rounded-xl border border-gray-100 px-3 py-2 text-sm text-dark placeholder:text-light outline-none focus:border-coral/30 focus:shadow-sm transition-all"
       />
@@ -103,7 +114,10 @@
                 class="flex-1 text-left bg-transparent border-none cursor-pointer p-0"
               >
                 <p class="text-sm font-semibold text-dark">{group.name}</p>
-                <p class="text-[11px] text-medium">{group.friends.length} {t('groups.addresses')} · {group.friends.map(f => f.name).join(', ')}</p>
+                <p class="text-[11px] text-medium">
+                  {group.friends.length}
+                  {t('groups.addresses')} · {group.friends.map((f) => f.name).join(', ')}
+                </p>
               </button>
             {/if}
           </div>
@@ -134,7 +148,10 @@
             </button>
             <button
               onclick={() => handleDelete(group.id)}
-              class="text-[11px] px-2.5 py-1 rounded-lg font-semibold border-none cursor-pointer transition-colors {confirmDeleteId === group.id ? 'bg-red-500 text-white' : 'bg-warm-gray text-dark hover:bg-red-100 hover:text-red-600'}"
+              class="text-[11px] px-2.5 py-1 rounded-lg font-semibold border-none cursor-pointer transition-colors {confirmDeleteId ===
+              group.id
+                ? 'bg-red-500 text-white'
+                : 'bg-warm-gray text-dark hover:bg-red-100 hover:text-red-600'}"
               title={confirmDeleteId === group.id ? t('groups.confirmTitle') : t('groups.delete')}
             >
               {confirmDeleteId === group.id ? t('groups.confirm') : t('groups.delete')}
@@ -148,8 +165,12 @@
 
 <style>
   @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   .animate-fade-in {
     animation: fade-in 0.3s ease-out;

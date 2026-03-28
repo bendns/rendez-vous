@@ -4,7 +4,7 @@ const translations = {
     'app.title': 'Rendez-vous',
     'app.subtitle': 'Trouvez le lieu de rendez-vous idéal',
     'app.pageTitle': 'Rendez-vous — Trouvez le lieu de rendez-vous idéal',
-    'settings': 'Paramètres',
+    settings: 'Paramètres',
 
     // Settings bar
     'settings.apiKey': 'Clé API ORS',
@@ -72,14 +72,15 @@ const translations = {
 
     // Empty state
     'empty.title': 'On se retrouve où ?',
-    'empty.description': 'Commencez par ajouter les adresses de vos amis ci-dessus. On trouvera le meilleur point de rencontre pour tout le monde !',
+    'empty.description':
+      'Commencez par ajouter les adresses de vos amis ci-dessus. On trouvera le meilleur point de rencontre pour tout le monde !',
   },
 
   en: {
     'app.title': 'Rendez-vous',
     'app.subtitle': 'Find the perfect meeting spot',
     'app.pageTitle': 'Rendez-vous — Find the perfect meeting spot',
-    'settings': 'Settings',
+    settings: 'Settings',
 
     'settings.apiKey': 'ORS API Key',
     'settings.apiKeyPlaceholder': 'Paste your OpenRouteService key...',
@@ -137,14 +138,15 @@ const translations = {
     'info.distance': 'distance',
 
     'empty.title': 'Where shall we meet?',
-    'empty.description': "Start by adding your friends' addresses above. We'll find the fairest meeting spot for everyone!",
+    'empty.description':
+      "Start by adding your friends' addresses above. We'll find the fairest meeting spot for everyone!",
   },
 
   es: {
     'app.title': 'Rendez-vous',
     'app.subtitle': 'Encuentra el punto de encuentro ideal',
     'app.pageTitle': 'Rendez-vous — Encuentra el punto de encuentro ideal',
-    'settings': 'Ajustes',
+    settings: 'Ajustes',
 
     'settings.apiKey': 'Clave API ORS',
     'settings.apiKeyPlaceholder': 'Pega tu clave de OpenRouteService...',
@@ -171,7 +173,8 @@ const translations = {
     'groups.confirmTitle': 'Haz clic otra vez para confirmar',
     'groups.addresses': 'direcciones',
 
-    'warning.tooFar': 'Algunos amigos están a más de {distance}. Acerca las direcciones para encontrar un punto de encuentro.',
+    'warning.tooFar':
+      'Algunos amigos están a más de {distance}. Acerca las direcciones para encontrar un punto de encuentro.',
 
     'mode.title': '¿Qué buscas?',
     'mode.restaurants': 'Restaurantes',
@@ -202,7 +205,8 @@ const translations = {
     'info.distance': 'distancia',
 
     'empty.title': '¿Dónde nos vemos?',
-    'empty.description': 'Empieza añadiendo las direcciones de tus amigos arriba. ¡Encontraremos el mejor punto de encuentro para todos!',
+    'empty.description':
+      'Empieza añadiendo las direcciones de tus amigos arriba. ¡Encontraremos el mejor punto de encuentro para todos!',
   },
 };
 
