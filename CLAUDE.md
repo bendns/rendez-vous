@@ -32,6 +32,7 @@ src/
     MapView.svelte        — Leaflet map with markers and walking route polylines
     utils.js              — pure business logic (haversine, fairness, formatting)
     utils.test.js         — unit tests for utils.js
+    i18n.js               — translations (FR, EN, ES) and t() helper
 ```
 
 ## Commands
@@ -71,4 +72,5 @@ This app calls these APIs from the browser (no backend):
 - State management uses Svelte 5 runes (`$state`) in `stores.svelte.js`, exported as shared reactive objects.
 - Saved groups are persisted in `localStorage` (no database).
 - `config.js` is gitignored — copy `config.example.js` and adjust values as needed.
+- i18n: all user-facing strings are in `src/lib/i18n.js`. When adding UI text, add keys for all 3 languages (fr, en, es). Locale auto-detected from browser, persisted in `localStorage`.
 - ORS API key is optional in config — users can enter their own key in the app UI (settings icon). Key is stored in `sessionStorage` only (cleared on browser close).

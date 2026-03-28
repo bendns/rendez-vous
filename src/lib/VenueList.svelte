@@ -1,5 +1,6 @@
 <script>
   import { venues, friends, ranking, formatDistance, formatDuration, distanceToFriend } from './stores.svelte.js';
+  import { t } from './i18n.js';
 
   let { onSelectVenue = () => {}, selectedVenueId = null } = $props();
 
@@ -29,7 +30,7 @@
   {#if venues.loading}
     <div class="flex flex-col items-center justify-center py-8 gap-3">
       <div class="w-8 h-8 border-3 border-coral/20 border-t-coral rounded-full animate-spin"></div>
-      <p class="text-sm text-medium">Searching nearby...</p>
+      <p class="text-sm text-medium">{t('venues.searching')}</p>
     </div>
   {:else if venues.list.length > 0}
     {#each venues.list as venue, i (venue.id)}
@@ -53,10 +54,10 @@
           <div class="text-right shrink-0">
             {#if ranking.value === 'walking' && venue.avgWalkTime}
               <p class="text-xs font-semibold text-coral">~{formatDuration(venue.avgWalkTime)}</p>
-              <p class="text-[10px] text-light">avg walk</p>
+              <p class="text-[10px] text-light">{t('venues.avgWalk')}</p>
             {:else}
               <p class="text-xs font-semibold text-coral">~{avgDistanceLabel(venue)}</p>
-              <p class="text-[10px] text-light">avg distance</p>
+              <p class="text-[10px] text-light">{t('venues.avgDistance')}</p>
             {/if}
           </div>
         </div>
@@ -99,12 +100,12 @@
   {:else if friends.list.length >= 2}
     <div class="text-center py-8">
       <p class="text-4xl mb-2">🔍</p>
-      <p class="text-sm text-medium">No places found nearby.<br/>Try adding addresses closer together.</p>
+      <p class="text-sm text-medium">{t('venues.noResults')}<br/>{t('venues.noResultsHint')}</p>
     </div>
   {:else}
     <div class="text-center py-8">
       <p class="text-4xl mb-2">👋</p>
-      <p class="text-sm text-medium">Add at least 2 addresses<br/>to find the perfect spot!</p>
+      <p class="text-sm text-medium">{t('venues.needMore')}<br/>{t('venues.needMoreHint')}</p>
     </div>
   {/if}
 </div>

@@ -3,6 +3,7 @@
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
   import { friends, venues, centroid, mode, apiKey, fetchRoutes } from './stores.svelte.js';
+  import { t } from './i18n.js';
 
   let { selectedVenue = $bindable(null) } = $props();
 
@@ -121,7 +122,7 @@
     if (centroid.lat !== null && friends.list.length >= 2) {
       centroidMarker = L.marker([centroid.lat, centroid.lng], { icon: centroidIcon })
         .addTo(map)
-        .bindPopup('<div class="friend-popup">📍 Meeting point</div>');
+        .bindPopup(`<div class="friend-popup">${t('map.meetingPoint')}</div>`);
     }
   });
 
@@ -138,7 +139,7 @@
           <div>
             <div class="venue-popup-name">${v.name}</div>
             ${v.cuisine ? `<div class="venue-popup-type">${v.cuisine.replace(/;/g, ', ')}</div>` : ''}
-            <div class="venue-popup-distance">~${Math.round(v.avgDistance)}m avg</div>
+            <div class="venue-popup-distance">~${Math.round(v.avgDistance)}m ${t('map.avg')}</div>
           </div>
         `);
       marker.on('click', () => { selectedVenue = v; });

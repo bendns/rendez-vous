@@ -6,6 +6,7 @@
   import MapView from './lib/MapView.svelte';
   import GroupManager from './lib/GroupManager.svelte';
   import { friends, venues, mode, ranking, unit, apiKey, setApiKey, tooFarApart, MAX_DISTANCE, MAX_ADDRESSES, searchVenues, rerankVenues, formatMaxDistance } from './lib/stores.svelte.js';
+  import { t, locale, locales, localeLabels, setLocale } from './lib/i18n.js';
 
   let selectedVenue = $state(null);
   let sidebarOpen = $state(true);
@@ -23,11 +24,21 @@
     <div class="flex items-center gap-2 sm:gap-3">
       <span class="text-2xl sm:text-3xl">📍</span>
       <div>
-        <h1 class="text-lg sm:text-xl font-display font-bold italic text-dark leading-tight">Rendez-vous</h1>
-        <p class="text-xs text-medium hidden sm:block">Find the perfect meeting spot</p>
+        <h1 class="text-lg sm:text-xl font-display font-bold italic text-dark leading-tight">{t('app.title')}</h1>
+        <p class="text-xs text-medium hidden sm:block">{t('app.subtitle')}</p>
       </div>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2">
+      <!-- Language selector -->
+      <div class="flex bg-warm-gray rounded-lg p-0.5 gap-0.5">
+        {#each locales as lang}
+          <button
+            onclick={() => setLocale(lang)}
+            class="px-1.5 sm:px-2 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {locale.value === lang ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
+          >{localeLabels[lang]}</button>
+        {/each}
+      </div>
+      <!-- Unit selector -->
       <div class="flex bg-warm-gray rounded-lg p-0.5 gap-0.5">
         <button
           onclick={() => unit.value = 'km'}
@@ -41,7 +52,7 @@
       <button
         onclick={() => showSettings = !showSettings}
         class="px-2 sm:px-2.5 py-1 rounded-lg text-sm cursor-pointer border-none transition-colors {showSettings ? 'bg-coral/10 text-coral' : 'bg-warm-gray text-medium hover:text-dark'}"
-        title="Settings"
+        title={t('settings')}
       >
         {apiKey.value ? '🔑' : '⚙️'}
       </button>
@@ -57,20 +68,20 @@
   <!-- Settings bar -->
   {#if showSettings}
     <div class="px-4 sm:px-6 py-3 bg-warm-gray/50 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 animate-fade-in">
-      <label class="text-xs font-semibold text-dark whitespace-nowrap" for="ors-key">ORS API Key</label>
+      <label class="text-xs font-semibold text-dark whitespace-nowrap" for="ors-key">{t('settings.apiKey')}</label>
       <div class="flex items-center gap-2 flex-1">
         <input
           id="ors-key"
           type="password"
           bind:value={keyInput}
           onchange={() => setApiKey(keyInput.trim())}
-          placeholder="Paste your OpenRouteService key..."
+          placeholder={t('settings.apiKeyPlaceholder')}
           class="flex-1 bg-white rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-dark placeholder:text-light outline-none focus:border-coral/30 min-w-0"
         />
         {#if apiKey.value}
-          <span class="text-xs text-mint font-semibold shrink-0">Active</span>
+          <span class="text-xs text-mint font-semibold shrink-0">{t('settings.active')}</span>
         {:else}
-          <a href="https://openrouteservice.org/dev/#/signup" target="_blank" rel="noopener" class="text-xs text-coral hover:underline whitespace-nowrap shrink-0">Get a free key</a>
+          <a href="https://openrouteservice.org/dev/#/signup" target="_blank" rel="noopener" class="text-xs text-coral hover:underline whitespace-nowrap shrink-0">{t('settings.getKey')}</a>
         {/if}
       </div>
     </div>
@@ -86,7 +97,7 @@
         <!-- Search -->
         <div>
           <h2 class="text-sm font-bold text-dark mb-2 flex items-center gap-2">
-            <span>👥</span> Who's coming?
+            <span>👥</span> {t('friends.title')}
           </h2>
           <AddressInput />
         </div>
@@ -97,7 +108,7 @@
         <!-- Groups -->
         <div>
           <h2 class="text-sm font-bold text-dark mb-2 flex items-center gap-2">
-            <span>💾</span> Saved groups
+            <span>💾</span> {t('groups.title')}
           </h2>
           <GroupManager />
         </div>
@@ -107,7 +118,7 @@
           <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 animate-fade-in">
             <span class="text-lg">⚠️</span>
             <p class="text-sm text-amber-800">
-              Some friends are more than {formatMaxDistance()} apart. Add closer addresses to find a meeting spot.
+              {t('warning.tooFar', { distance: formatMaxDistance() })}
             </p>
           </div>
         {/if}
@@ -116,7 +127,7 @@
         {#if friends.list.length >= 2 && !tooFarApart.value}
           <div class="animate-fade-in">
             <h2 class="text-sm font-bold text-dark mb-2 flex items-center gap-2">
-              <span>🎯</span> What are you looking for?
+              <span>🎯</span> {t('mode.title')}
             </h2>
             <ModeToggle />
           </div>
@@ -124,7 +135,7 @@
           <!-- Ranking toggle -->
           <div class="animate-fade-in">
             <h2 class="text-sm font-bold text-dark mb-2 flex items-center gap-2">
-              <span>⚖️</span> Rank by
+              <span>⚖️</span> {t('ranking.title')}
             </h2>
             <div class="flex bg-warm-gray rounded-xl p-1 gap-1">
               <button
@@ -132,14 +143,14 @@
                 class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer border-none {ranking.value === 'equidistant' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
               >
                 <span class="text-lg">📏</span>
-                Distance
+                {t('ranking.distance')}
               </button>
               <button
                 onclick={() => { if (!apiKey.value) { showSettings = true; return; } ranking.value = 'walking'; rerankVenues(); }}
                 class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 border-none {!apiKey.value ? 'bg-transparent text-light cursor-default' : ranking.value === 'walking' ? 'bg-white shadow-sm text-coral cursor-pointer' : 'bg-transparent text-medium hover:text-dark cursor-pointer'}"
               >
                 <span class="text-lg">🚶</span>
-                Walk time
+                {t('ranking.walkTime')}
                 {#if !apiKey.value}
                   <span class="text-[10px] text-light">🔑</span>
                 {/if}
@@ -153,9 +164,9 @@
           <div class="animate-fade-in">
             <h2 class="text-sm font-bold text-dark mb-2 flex items-center gap-2">
               <span>{mode.value === 'restaurant' ? '🍽️' : '🍸'}</span>
-              Best spots
+              {t('venues.title')}
               {#if venues.list.length > 0}
-                <span class="text-xs font-normal text-medium">({venues.list.length} found)</span>
+                <span class="text-xs font-normal text-medium">({t('venues.found', { count: venues.list.length })})</span>
               {/if}
             </h2>
             <VenueList onSelectVenue={handleSelectVenue} selectedVenueId={selectedVenue?.id} />
@@ -166,9 +177,9 @@
         {#if friends.list.length === 0}
           <div class="flex-1 flex flex-col items-center justify-center text-center py-8 animate-fade-in">
             <div class="text-6xl mb-4 animate-bounce-slow">🤝</div>
-            <h3 class="text-lg font-bold text-dark mb-1">Where shall we meet?</h3>
+            <h3 class="text-lg font-bold text-dark mb-1">{t('empty.title')}</h3>
             <p class="text-sm text-medium max-w-[260px]">
-              Start by adding your friends' addresses above. We'll find the fairest meeting spot for everyone!
+              {t('empty.description')}
             </p>
           </div>
         {/if}
@@ -184,8 +195,8 @@
         <div class="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/90 backdrop-blur-md rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shadow-lg border border-gray-100 animate-fade-in">
           <p class="text-xs text-medium">
             <span class="font-bold text-coral">{venues.list.length}</span>
-            {mode.value === 'restaurant' ? 'restaurants' : 'bars'} found
-            · ranked by {ranking.value === 'walking' ? 'walk time' : 'distance'}
+            {mode.value === 'restaurant' ? t('info.restaurants') : t('info.bars')} {t('info.found')}
+            · {t('info.rankedBy')} {ranking.value === 'walking' ? t('info.walkTime') : t('info.distance')}
           </p>
         </div>
       {/if}
