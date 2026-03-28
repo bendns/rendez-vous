@@ -1,6 +1,7 @@
-// Copy this file to config.js and fill in your values.
-// Get a free API key at https://openrouteservice.org/dev/#/signup
+// Copy this file to config.js and adjust values as needed.
+// ORS API key is optional here — users can enter their own in the app UI.
+// Get a free key at https://openrouteservice.org/dev/#/signup
 
-export const ORS_API_KEY = 'YOUR_API_KEY_HERE';
-export const MAX_DISTANCE_KM = 10;
-export const MAX_ADDRESSES = 5;
+export const ORS_API_KEY = '';
+export const MAX_DISTANCE = 10; // in km
+export const MAX_ADDRESSES = 10;

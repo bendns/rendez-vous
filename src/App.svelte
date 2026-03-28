@@ -5,10 +5,12 @@
   import VenueList from './lib/VenueList.svelte';
   import MapView from './lib/MapView.svelte';
   import GroupManager from './lib/GroupManager.svelte';
-  import { friends, venues, mode, ranking, tooFarApart, MAX_DISTANCE_KM, MAX_ADDRESSES, searchVenues, rerankVenues } from './lib/stores.svelte.js';
+  import { friends, venues, mode, ranking, unit, apiKey, setApiKey, tooFarApart, MAX_DISTANCE, MAX_ADDRESSES, searchVenues, rerankVenues, formatMaxDistance } from './lib/stores.svelte.js';
 
   let selectedVenue = $state(null);
   let sidebarOpen = $state(true);
+  let showSettings = $state(false);
+  let keyInput = $state(apiKey.value);
 
   function handleSelectVenue(venue) {
     selectedVenue = venue;
@@ -25,13 +27,52 @@
         <p class="text-xs text-medium">Find the perfect meeting spot</p>
       </div>
     </div>
-    <button
-      onclick={() => sidebarOpen = !sidebarOpen}
-      class="md:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-warm-gray text-dark text-sm font-semibold cursor-pointer border-none"
-    >
-      {sidebarOpen ? '🗺️ Map' : '📋 List'}
-    </button>
+    <div class="flex items-center gap-2">
+      <div class="flex bg-warm-gray rounded-lg p-0.5 gap-0.5">
+        <button
+          onclick={() => unit.value = 'km'}
+          class="px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {unit.value === 'km' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
+        >km</button>
+        <button
+          onclick={() => unit.value = 'mi'}
+          class="px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer border-none {unit.value === 'mi' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
+        >mi</button>
+      </div>
+      <button
+        onclick={() => showSettings = !showSettings}
+        class="px-2.5 py-1 rounded-lg text-sm cursor-pointer border-none transition-colors {showSettings ? 'bg-coral/10 text-coral' : 'bg-warm-gray text-medium hover:text-dark'}"
+        title="Settings"
+      >
+        {apiKey.value ? '🔑' : '⚙️'}
+      </button>
+      <button
+        onclick={() => sidebarOpen = !sidebarOpen}
+        class="md:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-warm-gray text-dark text-sm font-semibold cursor-pointer border-none"
+      >
+        {sidebarOpen ? '🗺️ Map' : '📋 List'}
+      </button>
+    </div>
   </header>
+
+  <!-- Settings bar -->
+  {#if showSettings}
+    <div class="px-6 py-3 bg-warm-gray/50 border-b border-gray-100 flex items-center gap-3 animate-fade-in">
+      <label class="text-xs font-semibold text-dark whitespace-nowrap" for="ors-key">ORS API Key</label>
+      <input
+        id="ors-key"
+        type="password"
+        bind:value={keyInput}
+        onchange={() => setApiKey(keyInput.trim())}
+        placeholder="Paste your OpenRouteService key..."
+        class="flex-1 bg-white rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-dark placeholder:text-light outline-none focus:border-coral/30 max-w-md"
+      />
+      {#if apiKey.value}
+        <span class="text-xs text-mint font-semibold">Active</span>
+      {:else}
+        <a href="https://openrouteservice.org/dev/#/signup" target="_blank" rel="noopener" class="text-xs text-coral hover:underline whitespace-nowrap">Get a free key</a>
+      {/if}
+    </div>
+  {/if}
 
   <!-- Main content -->
   <div class="flex-1 flex overflow-hidden">
@@ -64,7 +105,7 @@
           <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 animate-fade-in">
             <span class="text-lg">⚠️</span>
             <p class="text-sm text-amber-800">
-              Some friends are more than {MAX_DISTANCE_KM}km apart. Add closer addresses to find a meeting spot.
+              Some friends are more than {formatMaxDistance()} apart. Add closer addresses to find a meeting spot.
             </p>
           </div>
         {/if}
@@ -92,11 +133,14 @@
                 Distance
               </button>
               <button
-                onclick={() => { ranking.value = 'walking'; rerankVenues(); }}
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer border-none {ranking.value === 'walking' ? 'bg-white shadow-sm text-coral' : 'bg-transparent text-medium hover:text-dark'}"
+                onclick={() => { if (!apiKey.value) { showSettings = true; return; } ranking.value = 'walking'; rerankVenues(); }}
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 border-none {!apiKey.value ? 'bg-transparent text-light cursor-default' : ranking.value === 'walking' ? 'bg-white shadow-sm text-coral cursor-pointer' : 'bg-transparent text-medium hover:text-dark cursor-pointer'}"
               >
                 <span class="text-lg">🚶</span>
                 Walk time
+                {#if !apiKey.value}
+                  <span class="text-[10px] text-light">🔑</span>
+                {/if}
               </button>
             </div>
           </div>
