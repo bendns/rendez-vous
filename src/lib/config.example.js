@@ -3,4 +3,4 @@
 
 export const ORS_API_KEY = 'YOUR_API_KEY_HERE';
 export const MAX_DISTANCE_KM = 10;
-export const MAX_ADDRESSES = 5;
+export const MAX_ADDRESSES = 10;
